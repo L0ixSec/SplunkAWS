@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 # Declare the variable for DDNS name
-variable "ddns_name" {
+variable "DDNS_NAME" {
   description = "The DDNS name to use for CIDR block"
   type        = string
 }
@@ -29,14 +29,14 @@ resource "aws_security_group" "splunk_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.ddns_name]  # Use the variable directly
+    cidr_blocks = [var.DDNS_NAME]  # Use the variable directly
   }
 
   ingress {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
-    cidr_blocks = [var.ddns_name]  # Use the variable directly
+    cidr_blocks = [var.DDNS_NAME]  # Use the variable directly
   }
 
   egress {
