@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_instance" "splunk_instance" {
   ami           = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI (free-tier eligible)
   instance_type = "t2.micro"
-  key_name      = "your-key-name"
+  key_name      = "l0ix"
 
   tags = {
     Name = "SplunkInstance"
