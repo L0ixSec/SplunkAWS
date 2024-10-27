@@ -2,10 +2,16 @@ provider "aws" {
   region = "eu-west-2"
 }
 
+# Declare the variable for DDNS name
+variable "ddns_name" {
+  description = "The DDNS name to use for CIDR block"
+  type        = string
+}
+
 resource "aws_instance" "splunk_instance" {
   ami           = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI (free-tier eligible)
   instance_type = "t2.micro"
-  key_name      = "l0ix"
+  key_name      = "l0ix"  # Your key name
 
   tags = {
     Name = "SplunkInstance"
@@ -23,14 +29,14 @@ resource "aws_security_group" "splunk_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${cidrsubnet(var.ddns_name, 32)}"]
+    cidr_blocks = [var.ddns_name]  # Use the variable directly
   }
 
   ingress {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
-    cidr_blocks = ["${cidrsubnet(var.ddns_name, 32)}"]
+    cidr_blocks = [var.ddns_name]  # Use the variable directly
   }
 
   egress {
