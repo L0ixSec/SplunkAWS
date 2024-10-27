@@ -20,21 +20,24 @@ jobs:
 
       - name: Terraform Init
         working-directory: terraform  # Specify the working directory for Terraform commands
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Set up these secrets in your repo
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: terraform init
 
       - name: Terraform Plan
+        working-directory: terraform  # Specify the working directory for Terraform commands
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Set up these secrets in your repo
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        working-directory: terraform  # Specify the working directory for Terraform commands
-        run: terraform plan -var-file="terraform/terraform.tfvars"
+        run: terraform plan -var-file="terraform.tfvars"  # Using the variables file
 
       - name: Terraform Apply
+        working-directory: terraform  # Specify the working directory for Terraform commands
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Set up these secrets in your repo
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        working-directory: terraform  # Specify the working directory for Terraform commands
-        run: terraform apply -auto-approve -var-file="terraform/terraform.tfvars"
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"  # Using the variables file
 
       - name: Output EC2 Instance Public IP
         working-directory: terraform  # Specify the working directory for Terraform commands
