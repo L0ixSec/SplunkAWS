@@ -1,0 +1,32 @@
+name: Terraform Apply
+
+on:
+  workflow_dispatch:  # Allows manual triggering from the Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.0 # Specify the Terraform version you want to use
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Set up these secrets in your repo
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DDNS_NAME: ${{ secrets.DDNS_NAME }}  # Your DDNS secret
+        run: terraform apply -auto-approve -var="ddns_name=${{ secrets.DDNS_NAME }}"
+
+      - name: Output EC2 Instance Public IP
+        run: terraform output ec2_instance_public_ip
