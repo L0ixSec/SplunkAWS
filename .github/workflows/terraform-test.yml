@@ -15,30 +15,27 @@ jobs:
         with:
           terraform_version: 1.3.0  # Specify the Terraform version you want to use
 
-      - name: Create Terraform Variables File
-        run: echo "ddns_name=${{ secrets.DDNS_NAME }}" > terraform/terraform.tfvars
-
       - name: Terraform Init
         working-directory: terraform  # Specify the working directory for Terraform commands
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Set up these secrets in your repo
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: terraform init
 
       - name: Terraform Plan
-        working-directory: terraform  # Specify the working directory for Terraform commands
+        working-directory: terraform
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Set up these secrets in your repo
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform plan -var-file="terraform.tfvars"  # Using the variables file
+        run: terraform plan -var="DDNS_NAME=${{ secrets.DDNS_NAME }}"
 
       - name: Terraform Apply
-        working-directory: terraform  # Specify the working directory for Terraform commands
+        working-directory: terraform
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Set up these secrets in your repo
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform apply -auto-approve -var-file="terraform.tfvars"  # Using the variables file
+        run: terraform apply -auto-approve -var="DDNS_NAME=${{ secrets.DDNS_NAME }}"
 
       - name: Output EC2 Instance Public IP
-        working-directory: terraform  # Specify the working directory for Terraform commands
+        working-directory: terraform
         run: terraform output ec2_instance_public_ip

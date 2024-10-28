@@ -2,7 +2,6 @@ provider "aws" {
   region = "eu-west-2"
 }
 
-# Declare the variable for DDNS name
 variable "DDNS_NAME" {
   description = "The DDNS name to use for CIDR block"
   type        = string
