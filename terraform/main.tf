@@ -8,9 +8,9 @@ variable "DDNS_NAME" {
 }
 
 resource "aws_instance" "splunk_instance" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI (free-tier eligible)
+  ami           = "ami-03ceeb33c1e4abcd1"  
   instance_type = "t2.micro"
-  key_name      = "l0ix"  # Your key name
+  key_name      = "l0ix"  
 
   tags = {
     Name = "SplunkInstance"
@@ -28,14 +28,14 @@ resource "aws_security_group" "splunk_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.DDNS_NAME]  # Use the variable directly
+    cidr_blocks = [var.DDNS_NAME]  
   }
 
   ingress {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
-    cidr_blocks = [var.DDNS_NAME]  # Use the variable directly
+    cidr_blocks = [var.DDNS_NAME]  
   }
 
   egress {
